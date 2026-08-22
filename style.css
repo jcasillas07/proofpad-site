@@ -1,0 +1,24 @@
+/* ProofPad — the site wears the app's tokens (docs/proofpad-style.md). */
+:root{--steel:#28292B;--plate:#333437;--seam:#4B4C50;--chalk:#F2F0EA;--ash:#C7C3B9;--smoke:#97938B;--birch:#C89B6A}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--steel);color:var(--chalk);font:17px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+body{min-height:100vh;display:flex;flex-direction:column}
+main{width:100%;max-width:640px;margin:0 auto;padding:72px 24px 48px;flex:1}
+.wordmark{font-size:44px;font-weight:600;letter-spacing:.02em;line-height:1;color:var(--chalk);text-decoration:none;display:inline-block}
+.lede{font-size:28px;font-weight:600;line-height:1.2;margin-top:40px}
+.sub{color:var(--ash);margin-top:14px;font-size:17px}
+.quiet{color:var(--smoke);margin-top:28px;font-size:15px}
+h1{font-size:28px;font-weight:600;line-height:1.2;margin-top:40px}
+h2{font-size:22px;font-weight:600;margin-top:36px;padding-top:20px;border-top:1px solid var(--seam)}
+p,li{color:var(--ash);margin-top:12px}
+ul{padding-left:22px}
+strong{color:var(--chalk);font-weight:600}
+a{color:var(--chalk)}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px;color:var(--ash)}
+footer{width:100%;max-width:640px;margin:0 auto;padding:24px;border-top:1px solid var(--seam);display:flex;gap:20px;flex-wrap:wrap;align-items:baseline}
+footer a{color:var(--ash);text-decoration:none;font-size:15px}
+footer a:hover{color:var(--chalk)}
+footer .motto{color:var(--smoke);font-size:13px;margin-left:auto}
+.actions{margin-top:36px;display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;padding:0 22px;height:52px;line-height:52px;border-radius:6px;background:var(--chalk);color:var(--steel);font-weight:500;text-decoration:none}
+.btn.secondary{background:transparent;color:var(--chalk);border:1px solid var(--seam)}
