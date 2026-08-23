@@ -69,19 +69,16 @@ body.home .ig:hover{color:var(--ash)}
    that clearance; the centered column has height to spare, so it costs
    nothing. env() adds the home-indicator inset on top where there is one. */
 body.home footer{
-  flex:none;max-width:none;border-top:1px solid var(--seam);
+  flex:none;max-width:none;border-top:0;
   /* min() so the clearance yields on a very short viewport — the page must
      fit before it is comfortable. 46px on a phone, ~22px at 320px tall. */
   padding:14px 24px calc(min(46px,7svh) + env(safe-area-inset-bottom));
   justify-content:center;gap:18px;
 }
 body.home footer a{font-size:13px}
-body.home footer .motto{font-size:11px;font-family:var(--mono);margin-left:0}
 @media(min-width:700px){
   /* A pointer device has no floating toolbar to clear. */
   body.home footer{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
-  body.home footer{justify-content:flex-start}
-  body.home footer .motto{margin-left:auto}
 }
 
 /* The board behind the words — the app's own sign-in gate, on the web.
@@ -107,4 +104,9 @@ body.home footer .motto{font-size:11px;font-family:var(--mono);margin-left:0}
   border-bottom:1px solid rgba(75,76,80,.28);
 }
 .brow span:last-child{text-align:right}
+/* Both rules below stop the drift, and both must sit AFTER the .drift
+   declaration above: same specificity, so source order decides. */
+/* The drift is a phone effect. On a wide screen it reads as motion for its
+   own sake, so the board is simply a static background there. */
+@media(min-width:700px){.drift{animation:none}}
 @media(prefers-reduced-motion:reduce){.drift{animation:none}}
