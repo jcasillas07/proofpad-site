@@ -89,17 +89,20 @@ body.home footer .motto{font-size:11px;font-family:var(--mono);margin-left:0}
    quiet ground, and it is aria-hidden because it is decoration. */
 .board{
   position:fixed;inset:0;z-index:0;overflow:hidden;display:flex;justify-content:center;
+  /* Decoration, not content: aria-hidden keeps it from screen readers,
+     user-select keeps it out of a copy of the page. */
+  -webkit-user-select:none;user-select:none;
   /* Quiet band spans the whole copy block, not just its middle, so the
      wordmark and the lede sit on ground as calm as the CTA does. */
   --fade:linear-gradient(180deg,transparent 0%,#000 14%,#000 24%,
     rgba(0,0,0,.12) 38%,rgba(0,0,0,.12) 70%,#000 84%,transparent 100%);
   -webkit-mask-image:var(--fade);mask-image:var(--fade);
 }
-.drift{display:flex;flex-direction:column;width:min(100%,470px);animation:drift 44s linear infinite}
+.drift{display:flex;flex-direction:column;width:min(100%,300px);animation:drift 44s linear infinite}
 /* The list is doubled in the markup, so -50% lands exactly on a seam. */
 @keyframes drift{from{transform:translateY(0)}to{transform:translateY(-50%)}}
 .brow{
-  display:grid;grid-template-columns:38px 1fr 56px;gap:12px;padding:11px 22px;
+  display:grid;grid-template-columns:auto 1fr;gap:12px;padding:11px 22px;
   font:13px/1 var(--mono);color:rgba(75,76,80,.85);
   border-bottom:1px solid rgba(75,76,80,.28);
 }
