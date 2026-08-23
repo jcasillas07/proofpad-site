@@ -1,8 +1,17 @@
-/* ProofPad — the site wears the app's tokens (docs/proofpad-style.md). */
-:root{--steel:#28292B;--plate:#333437;--seam:#4B4C50;--chalk:#F2F0EA;--ash:#C7C3B9;--smoke:#97938B;--birch:#C89B6A}
+/* ProofPad — the site wears the app's tokens (docs/proofpad-style.md).
+   Two page shapes share this file:
+     .home     the landing page — ONE fixed viewport, centered, never scrolls
+     (default) the document pages (/privacy) — long, and they MUST scroll
+   Never move the .home rules onto bare `body`, or the privacy policy loses
+   everything below the fold. */
+:root{--steel:#28292B;--plate:#333437;--knurl:#3F4043;--seam:#4B4C50;--chalk:#F2F0EA;--ash:#C7C3B9;--smoke:#97938B;--birch:#C89B6A;
+--sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif;
+--mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace}
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--steel);color:var(--chalk);font:17px/1.5 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-body{min-height:100vh;display:flex;flex-direction:column}
+html{background:var(--steel);color:var(--chalk);font:17px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+body{min-height:100vh;display:flex;flex-direction:column;background:var(--steel)}
+
+/* ── document pages (/privacy) ─────────────────────────────────────── */
 main{width:100%;max-width:640px;margin:0 auto;padding:72px 24px 48px;flex:1}
 .wordmark{font-size:44px;font-weight:600;letter-spacing:.02em;line-height:1;color:var(--chalk);text-decoration:none;display:inline-block}
 .lede{font-size:28px;font-weight:600;line-height:1.2;margin-top:40px}
@@ -14,7 +23,7 @@ p,li{color:var(--ash);margin-top:12px}
 ul{padding-left:22px}
 strong{color:var(--chalk);font-weight:600}
 a{color:var(--chalk)}
-.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:13px;color:var(--ash)}
+.mono{font-family:var(--mono);font-size:13px;color:var(--ash)}
 footer{width:100%;max-width:640px;margin:0 auto;padding:24px;border-top:1px solid var(--seam);display:flex;gap:20px;flex-wrap:wrap;align-items:baseline}
 footer a{color:var(--ash);text-decoration:none;font-size:15px}
 footer a:hover{color:var(--chalk)}
@@ -22,3 +31,77 @@ footer .motto{color:var(--smoke);font-size:13px;margin-left:auto}
 .actions{margin-top:36px;display:flex;gap:12px;flex-wrap:wrap}
 .btn{display:inline-block;padding:0 22px;height:52px;line-height:52px;border-radius:6px;background:var(--chalk);color:var(--steel);font-weight:500;text-decoration:none}
 .btn.secondary{background:transparent;color:var(--chalk);border:1px solid var(--seam)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--chalk);outline-offset:3px;border-radius:4px}
+
+/* ── the landing page ──────────────────────────────────────────────── */
+/* svh, not vh: vh resolves against the toolbar-RETRACTED viewport, so on a
+   phone the page loads taller than the screen and clips. svh is the smallest
+   (toolbar-showing) viewport, which is the only one that can be guaranteed. */
+body.home{height:100vh;height:100svh;overflow:hidden}
+
+/* Every size below is a clamp so the column compresses on a short screen
+   instead of overflowing. Nothing here has a fixed aspect ratio, which is
+   what makes "never scrolls" structural rather than tuned. */
+body.home main{
+  flex:1;min-height:0;max-width:none;padding:clamp(14px,3svh,28px) 24px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:clamp(14px,2.4svh,26px);position:relative;z-index:1;
+}
+body.home .stack{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.4svh,14px)}
+body.home .wordmark{font-size:clamp(26px,4.4svh,40px);letter-spacing:.045em}
+body.home .lede{font-size:clamp(21px,3.4svh,31px);font-weight:600;letter-spacing:-.015em;line-height:1.14;margin:0;text-wrap:balance}
+body.home .sub{font-size:clamp(14px,1.85svh,17px);color:var(--ash);line-height:1.5;margin:0;max-width:34ch}
+body.home .ios{font:clamp(11px,1.5svh,13px)/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--smoke);margin:0}
+body.home .cta{display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1.5svh,14px)}
+/* The CTA slot. Apple's official white App Store badge replaces this line on
+   launch day and nothing else moves. Birch never appears on the site: the
+   badge is Apple's artwork, so the page's one action wears Apple's color. */
+body.home .slot{
+  border:1px solid var(--seam);border-radius:6px;color:var(--ash);margin:0;
+  padding:0 22px;height:clamp(42px,5.6svh,50px);display:flex;align-items:center;
+  font-size:clamp(14px,1.8svh,16px);
+}
+body.home .ig{color:var(--smoke);text-decoration:none;font-size:clamp(13px,1.7svh,15px)}
+body.home .ig:hover{color:var(--ash)}
+/* Mobile Safari's toolbar floats over the small viewport, so svh alone does
+   not keep the footer clear of it — and Privacy / Delete your data are
+   load-bearing (Meta requires both reachable). The extra bottom padding buys
+   that clearance; the centered column has height to spare, so it costs
+   nothing. env() adds the home-indicator inset on top where there is one. */
+body.home footer{
+  flex:none;max-width:none;border-top:1px solid var(--seam);
+  /* min() so the clearance yields on a very short viewport — the page must
+     fit before it is comfortable. 46px on a phone, ~22px at 320px tall. */
+  padding:14px 24px calc(min(46px,7svh) + env(safe-area-inset-bottom));
+  justify-content:center;gap:18px;
+}
+body.home footer a{font-size:13px}
+body.home footer .motto{font-size:11px;font-family:var(--mono);margin-left:0}
+@media(min-width:700px){
+  /* A pointer device has no floating toolbar to clear. */
+  body.home footer{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+  body.home footer{justify-content:flex-start}
+  body.home footer .motto{margin-left:auto}
+}
+
+/* The board behind the words — the app's own sign-in gate, on the web.
+   A ghost, not a table: it fades out through the middle so the copy sits on
+   quiet ground, and it is aria-hidden because it is decoration. */
+.board{
+  position:fixed;inset:0;z-index:0;overflow:hidden;display:flex;justify-content:center;
+  /* Quiet band spans the whole copy block, not just its middle, so the
+     wordmark and the lede sit on ground as calm as the CTA does. */
+  --fade:linear-gradient(180deg,transparent 0%,#000 14%,#000 24%,
+    rgba(0,0,0,.12) 38%,rgba(0,0,0,.12) 70%,#000 84%,transparent 100%);
+  -webkit-mask-image:var(--fade);mask-image:var(--fade);
+}
+.drift{display:flex;flex-direction:column;width:min(100%,470px);animation:drift 44s linear infinite}
+/* The list is doubled in the markup, so -50% lands exactly on a seam. */
+@keyframes drift{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+.brow{
+  display:grid;grid-template-columns:38px 1fr 56px;gap:12px;padding:11px 22px;
+  font:13px/1 var(--mono);color:rgba(75,76,80,.85);
+  border-bottom:1px solid rgba(75,76,80,.28);
+}
+.brow span:last-child{text-align:right}
+@media(prefers-reduced-motion:reduce){.drift{animation:none}}
