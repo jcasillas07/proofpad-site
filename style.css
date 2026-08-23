@@ -45,13 +45,12 @@ body.home{height:100vh;height:100svh;overflow:hidden}
 body.home main{
   flex:1;min-height:0;max-width:none;padding:clamp(14px,3svh,28px) 24px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;gap:clamp(14px,2.4svh,26px);position:relative;z-index:1;
+  text-align:center;gap:clamp(16px,2.8svh,30px);
 }
 body.home .stack{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.4svh,14px)}
 body.home .wordmark{font-size:clamp(26px,4.4svh,40px);letter-spacing:.045em}
 body.home .lede{font-size:clamp(21px,3.4svh,31px);font-weight:600;letter-spacing:-.015em;line-height:1.14;margin:0;text-wrap:balance}
 body.home .sub{font-size:clamp(14px,1.85svh,17px);color:var(--ash);line-height:1.5;margin:0;max-width:34ch}
-body.home .ios{font:clamp(11px,1.5svh,13px)/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--smoke);margin:0}
 body.home .cta{display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1.5svh,14px)}
 /* The CTA slot. Apple's official white App Store badge replaces this line on
    launch day and nothing else moves. Birch never appears on the site: the
@@ -80,33 +79,3 @@ body.home footer a{font-size:13px}
   /* A pointer device has no floating toolbar to clear. */
   body.home footer{padding-bottom:calc(16px + env(safe-area-inset-bottom))}
 }
-
-/* The board behind the words — the app's own sign-in gate, on the web.
-   A ghost, not a table: it fades out through the middle so the copy sits on
-   quiet ground, and it is aria-hidden because it is decoration. */
-.board{
-  position:fixed;inset:0;z-index:0;overflow:hidden;display:flex;justify-content:center;
-  /* Decoration, not content: aria-hidden keeps it from screen readers,
-     user-select keeps it out of a copy of the page. */
-  -webkit-user-select:none;user-select:none;
-  /* Quiet band spans the whole copy block, not just its middle, so the
-     wordmark and the lede sit on ground as calm as the CTA does. */
-  --fade:linear-gradient(180deg,transparent 0%,#000 14%,#000 24%,
-    rgba(0,0,0,.12) 38%,rgba(0,0,0,.12) 70%,#000 84%,transparent 100%);
-  -webkit-mask-image:var(--fade);mask-image:var(--fade);
-}
-.drift{display:flex;flex-direction:column;width:min(100%,300px);animation:drift 44s linear infinite}
-/* The list is doubled in the markup, so -50% lands exactly on a seam. */
-@keyframes drift{from{transform:translateY(0)}to{transform:translateY(-50%)}}
-.brow{
-  display:grid;grid-template-columns:auto 1fr;gap:12px;padding:11px 22px;
-  font:13px/1 var(--mono);color:rgba(75,76,80,.85);
-  border-bottom:1px solid rgba(75,76,80,.28);
-}
-.brow span:last-child{text-align:right}
-/* Both rules below stop the drift, and both must sit AFTER the .drift
-   declaration above: same specificity, so source order decides. */
-/* The drift is a phone effect. On a wide screen it reads as motion for its
-   own sake, so the board is simply a static background there. */
-@media(min-width:700px){.drift{animation:none}}
-@media(prefers-reduced-motion:reduce){.drift{animation:none}}
