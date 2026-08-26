@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#28292B">
-<title>You're invited to a Bout — ProofPad</title>
-<meta name="description" content="A Bout is a private competition between friends on ProofPad: a few exercises, a deadline, something at stake.">
-<meta property="og:title" content="You're invited to a Bout on ProofPad">
-<meta property="og:description" content="Friends, a deadline, something at stake. Open the link to see the terms and join.">
+<title>A challenge on ProofPad</title>
+<meta name="description" content="A friend is challenging you — a few exercises, a deadline, something at stake. Open the link to see the terms and join.">
+<meta property="og:title" content="A challenge on ProofPad">
+<meta property="og:description" content="A friend is challenging you — a few exercises, a deadline, something at stake. Open the link to see the terms and join.">
+<meta property="og:image" content="https://proofpad.co/icon-512.png">
 <meta property="og:type" content="website">
 <meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
@@ -26,7 +27,7 @@
        (docs/bouts-spec.md decision 11). Rendered from bout_invite_preview,
        the one anonymous door the server has. -->
   <section id="invite" aria-live="polite">
-    <p class="quiet" id="status">Loading the invite…</p>
+    <p class="quiet" id="status">Loading the challenge…</p>
   </section>
 
   <template id="card-template">
@@ -78,18 +79,85 @@
     return MONTHS[d.getMonth()] + " " + day + " " + String(d.getFullYear()).slice(-2);
   }
 
-  function formatLine(p) {
-    if (p.format === "race") return "Race to " + p.target;
-    if (p.format === "daily") return p.target + " a day";
-    return "Total reps";
+  // The challenge in the invite's own words — a MIRROR of BoutCopy.challenge
+  // in the app (Sync/Bouts.swift), which is the source; change both.
+  var NOUNS = { "pullup": "pull-ups", "bar-muscle-up": "muscle-ups" };
+  function spokenName(name) {
+    var t = name.trim();
+    if (t.length > 1 && /[A-Z]/.test(t[0]) && /[a-z]/.test(t[1])) return t[0].toLowerCase() + t.slice(1);
+    return t;
+  }
+  var SET_PHRASE = ["the", "to", "of", "on", "in", "a", "an"];
+  function plural(word) {
+    if (!/[A-Za-z]$/.test(word)) return word;               // "Push-ups!", an emoji
+    var tokens = word.toLowerCase().split(/[ -]+/);
+    if (tokens.length >= 2 && SET_PHRASE.indexOf(tokens[tokens.length - 2]) >= 0) return word;  // "skin the cat", "toes-to-bar"
+    var lower = word.toLowerCase();
+    if (/s$/.test(lower)) return word;
+    if (/(ch|sh|x|z)$/.test(lower)) return word + "es";
+    if (/[^aeiou]y$/.test(lower)) return word.slice(0, -1) + "ies";
+    return word + "s";
+  }
+  function noun(e, count) {
+    if (NOUNS[e.key]) return count === 1 ? NOUNS[e.key].slice(0, -1) : NOUNS[e.key];
+    var base = spokenName(e.name);
+    if (e.measurement !== "reps" || count === 1) return base;
+    return plural(base);
+  }
+  function spokenSeconds(s) {
+    if (s < 60) return s + " sec";
+    if (s % 60 === 0) return (s / 60) + " min";
+    return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0");
+  }
+  function amount(value, e) {
+    if (e.measurement === "hold") return spokenSeconds(value) + " of " + noun(e, 2);
+    if (e.measurement === "distance") return value + " m of " + noun(e, 2);
+    return value + " " + noun(e, value);
+  }
+  function joined(items) {
+    if (items.length <= 1) return items.join("");
+    if (items.length === 2) return items[0] + " and " + items[1];
+    return items.slice(0, -1).join(", ") + " and " + items[items.length - 1];
+  }
+  function spokenList(items) {
+    if (items.length <= 3) return joined(items);
+    return items.slice(0, 3).join(", ") + " and " + (items.length - 3) + " more";
+  }
+  function spokenDate(iso) {
+    var d = new Date(iso), now = new Date();
+    if (isNaN(d)) return "";
+    var s = MONTHS[d.getMonth()] + " " + d.getDate();
+    return d.getFullYear() === now.getFullYear() ? s : s + ", " + d.getFullYear();
+  }
+  function challenge(p) {
+    var ex = p.exercises, deadline = spokenDate(p.ends_at);
+    var allReps = ex.every(function (e) { return e.measurement === "reps"; });
+    var targets = ex.map(function (e) { return e.target || 0; });
+    var oneNumber = allReps && new Set(targets).size === 1;
+    if (p.format === "total") {
+      return "most " + spokenList(ex.map(function (e) {
+        if (e.measurement === "hold") return noun(e, 2) + " time";
+        if (e.measurement === "distance") return noun(e, 2) + " distance";
+        return noun(e, 2);
+      })) + " by " + deadline;
+    }
+    if (p.format === "race") {
+      if (ex.length === 1) return "first to " + amount(targets[0], ex[0]) + " before " + deadline;
+      if (oneNumber) return "first to " + targets[0] + " of each — " + spokenList(ex.map(function (e) { return noun(e, 2); })) + " — before " + deadline;
+      return "first to " + spokenList(ex.map(function (e) { return amount(e.target || 0, e); })) + " before " + deadline;
+    }
+    var tail = "until " + deadline + ", most days wins";
+    if (ex.length === 1) return amount(targets[0], ex[0]) + " a day " + tail;
+    if (oneNumber) return targets[0] + " a day of each — " + spokenList(ex.map(function (e) { return noun(e, 2); })) + " — " + tail;
+    return spokenList(ex.map(function (e) { return amount(e.target || 0, e); })) + " a day " + tail;
   }
 
   function render(p) {
     var node = document.getElementById("card-template").content.cloneNode(true);
     node.querySelector(".bout-name").textContent = p.name;
     node.querySelector(".dates").textContent = shortDate(p.starts_at) + " → " + shortDate(p.ends_at);
-    node.querySelector(".terms").textContent =
-      formatLine(p) + " · " + p.exercises.map(function (e) { return e.name; }).join(" · ");
+    var line = challenge(p);
+    node.querySelector(".terms").textContent = line.charAt(0).toUpperCase() + line.slice(1) + ".";
     if (p.stakes) {
       node.querySelector(".stakes").textContent = p.stakes;
     } else {
