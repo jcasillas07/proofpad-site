@@ -83,3 +83,22 @@ body.home .ig:hover{color:var(--ash)}
 /* The column layout needs the footer not to grow; everything else about it
    is the shared rule above. */
 body.home footer{flex:none}
+
+/* ── the invite page (/join?b=…) ──────────────────────────────────── */
+/* A Bout's terms as anyone with the link sees them (docs/bouts-spec.md
+   decision 8). The document-page shape; the card is a Plate surface with
+   micro labels, the app's own receipt grammar. No Birch, as everywhere on
+   the site. */
+.eyebrow{color:var(--smoke);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-top:40px}
+.bout-name{margin-top:8px}
+.terms{color:var(--ash);margin-top:6px}
+.card{background:var(--plate);border-radius:8px;padding:16px;margin-top:20px}
+.card p{margin-top:0}
+.micro{color:var(--smoke);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-top:12px}
+.micro:first-child{margin-top:0}
+.stakes,.members{color:var(--chalk);margin-top:4px}
+.members{color:var(--chalk)}
+.closes{margin-top:16px}
+#invite .actions{margin-top:20px}
+.btn.secondary:disabled{opacity:.5}
+#invite .quiet{margin-top:14px}

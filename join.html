@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#28292B">
+<title>You're invited to a Bout — ProofPad</title>
+<meta name="description" content="A Bout is a private competition between friends on ProofPad: a few exercises, a deadline, something at stake.">
+<meta property="og:title" content="You're invited to a Bout on ProofPad">
+<meta property="og:description" content="Friends, a deadline, something at stake. Open the link to see the terms and join.">
+<meta property="og:type" content="website">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css?v=4">
+</head>
+<body>
+
+<main>
+  <a class="wordmark" href="/">PROOFPAD</a>
+
+  <!-- The invite, as anyone holding the link sees it: the Bout's terms and
+       the members' display names — never a username or an account
+       (docs/bouts-spec.md decision 11). Rendered from bout_invite_preview,
+       the one anonymous door the server has. -->
+  <section id="invite" aria-live="polite">
+    <p class="quiet" id="status">Loading the invite…</p>
+  </section>
+
+  <template id="card-template">
+    <p class="eyebrow">You're invited to a Bout</p>
+    <h1 class="bout-name"></h1>
+    <p class="mono dates"></p>
+    <p class="terms"></p>
+    <div class="card">
+      <p class="micro stakes-label">Stakes</p>
+      <p class="stakes"></p>
+      <p class="micro">In it</p>
+      <p class="members"></p>
+    </div>
+    <p class="quiet closes"></p>
+    <div class="actions">
+      <a class="btn open" href="#">Open in ProofPad</a>
+      <button class="btn secondary get" type="button">Get ProofPad</button>
+    </div>
+    <p class="quiet fallback" hidden>ProofPad didn't open — get it below.</p>
+    <p class="quiet copied" hidden>Link copied. Install ProofPad, sign in, and you'll land right here.</p>
+    <p class="quiet store" hidden>Coming soon to the App Store.</p>
+  </template>
+</main>
+
+<footer>
+  <a href="/privacy">Privacy</a>
+  <a href="/privacy#delete">Delete your data</a>
+</footer>
+
+<script>
+(function () {
+  // The publishable key is public by design — RLS is the protection, and the
+  // preview RPC is the only thing anon can call about a Bout.
+  var API = "https://shmnxehvetkphousuods.supabase.co/rest/v1/rpc/bout_invite_preview";
+  var KEY = "sb_publishable_GZhozzVFRkinYi_NFGPvjg_daZ5339-";
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  var status = document.getElementById("status");
+  var invite = document.getElementById("invite");
+  var token = (new URLSearchParams(location.search).get("b") || "").trim();
+
+  function say(text) { status.hidden = false; status.textContent = text; }
+
+  // The app's short date: "Aug 29 26".
+  function shortDate(iso) {
+    var d = new Date(iso);
+    if (isNaN(d)) return "";
+    var day = String(d.getDate()).padStart(2, "0");
+    return MONTHS[d.getMonth()] + " " + day + " " + String(d.getFullYear()).slice(-2);
+  }
+
+  function formatLine(p) {
+    if (p.format === "race") return "Race to " + p.target;
+    if (p.format === "daily") return p.target + " a day";
+    return "Total reps";
+  }
+
+  function render(p) {
+    var node = document.getElementById("card-template").content.cloneNode(true);
+    node.querySelector(".bout-name").textContent = p.name;
+    node.querySelector(".dates").textContent = shortDate(p.starts_at) + " → " + shortDate(p.ends_at);
+    node.querySelector(".terms").textContent =
+      formatLine(p) + " · " + p.exercises.map(function (e) { return e.name; }).join(" · ");
+    if (p.stakes) {
+      node.querySelector(".stakes").textContent = p.stakes;
+    } else {
+      node.querySelector(".stakes-label").remove();
+      node.querySelector(".stakes").remove();
+    }
+    var seats = p.seats_open === 1 ? "1 seat open" : p.seats_open + " seats open";
+    node.querySelector(".members").textContent = p.members.join(", ") + " · " + seats;
+
+    var closes = node.querySelector(".closes");
+    var actions = node.querySelector(".actions");
+    if (!p.is_open) {
+      closes.textContent = "Joining closed — this one started " + shortDate(p.starts_at) + ".";
+      actions.remove();
+    } else if (p.seats_open === 0) {
+      closes.textContent = "This bout is full.";
+      actions.remove();
+    } else {
+      closes.textContent = "Joining closes when it starts.";
+      var link = "https://proofpad.co/join?b=" + encodeURIComponent(token);
+      var open = node.querySelector(".open");
+      var fallback = node.querySelector(".fallback");
+      open.href = "proofpad://join?b=" + encodeURIComponent(token);
+      // Honest fallback: if the page is still on screen a beat after the
+      // tap, the app didn't open. No user-agent sniffing.
+      open.addEventListener("click", function () {
+        var hidden = false;
+        var onHide = function () { hidden = true; };
+        document.addEventListener("visibilitychange", onHide, { once: true });
+        setTimeout(function () {
+          document.removeEventListener("visibilitychange", onHide);
+          if (!hidden && document.visibilityState === "visible") fallback.hidden = false;
+        }, 1200);
+      });
+      var get = node.querySelector(".get");
+      var copied = node.querySelector(".copied");
+      var store = node.querySelector(".store");
+      get.addEventListener("click", function () {
+        // Copy on the tap (a user gesture): after install and sign-in the
+        // app finds the link on the clipboard and opens the join screen —
+        // docs/bouts-spec.md decision 8. The store line replaces the badge
+        // until the app is live (README).
+        var done = function () { copied.hidden = false; store.hidden = false; get.disabled = true; };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(link).then(done, function () { legacyCopy(link); done(); });
+        } else {
+          legacyCopy(link); done();
+        }
+      });
+    }
+    status.hidden = true;
+    invite.appendChild(node);
+  }
+
+  function legacyCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", "");
+    ta.style.position = "fixed"; ta.style.top = "-1000px";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  if (!token) { say("This invite isn't open."); return; }
+
+  fetch(API, {
+    method: "POST",
+    headers: { "apikey": KEY, "Authorization": "Bearer " + KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ p_token: token })
+  }).then(function (r) {
+    if (!r.ok) throw new Error(String(r.status));
+    return r.text();
+  }).then(function (text) {
+    var p = text && text !== "null" ? JSON.parse(text) : null;
+    if (!p) { say("This invite isn't open."); return; }
+    render(p);
+  }).catch(function () {
+    say("Couldn't load this invite.");
+  });
+})();
+</script>
+
+</body>
+</html>

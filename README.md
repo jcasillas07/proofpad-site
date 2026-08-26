@@ -50,3 +50,17 @@ means overflowing content is *clipped and unreachable*, not scrolled to.
 
 Headless Chrome screenshots of this page crop oddly; trust DOM measurements, and do the
 visual check in real Safari (the iOS Simulator works: `xcrun simctl openurl <id> http://localhost:8899/`).
+
+## The invite page and the app link (2026-08-26, Bouts)
+
+- **`join.html`** serves `https://proofpad.co/join?b=<token>` — a Bout invite as anyone holding
+  the link sees it. The site's first JavaScript: it calls the app's one anonymous RPC
+  (`bout_invite_preview`) with the publishable key and renders the terms and the members'
+  display names. [Open in ProofPad] is the `proofpad://join?b=` scheme link; [Get ProofPad]
+  copies the invite URL to the clipboard (the app reads it once on a fresh install) and shows
+  the coming-soon line — on launch day that button opens the App Store after copying.
+- **`.well-known/apple-app-site-association`** makes the same URL a universal link (the app
+  opens straight from Messages). Team-scoped: re-issue at the org switch. GitHub Pages serves
+  it as `application/octet-stream`; verify after a push with
+  `curl -sI https://app-site-association.cdn-apple.com/a/v1/proofpad.co` — a 200 means Apple's
+  CDN accepted it. If it ever refuses the content-type, a header-setting host in front is the fix.
