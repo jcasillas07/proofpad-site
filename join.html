@@ -130,7 +130,7 @@
     return d.getFullYear() === now.getFullYear() ? s : s + ", " + d.getFullYear();
   }
   function challenge(p) {
-    var ex = p.exercises, deadline = spokenDate(p.ends_at);
+    var ex = p.exercises, deadline = p.ends_at ? spokenDate(p.ends_at) : "";
     var allReps = ex.every(function (e) { return e.measurement === "reps"; });
     var targets = ex.map(function (e) { return e.target || 0; });
     var oneNumber = allReps && new Set(targets).size === 1;
@@ -142,9 +142,10 @@
       })) + " by " + deadline;
     }
     if (p.format === "race") {
-      if (ex.length === 1) return "first to " + amount(targets[0], ex[0]) + " before " + deadline;
-      if (oneNumber) return "first to " + targets[0] + " of each — " + spokenList(ex.map(function (e) { return noun(e, 2); })) + " — before " + deadline;
-      return "first to " + spokenList(ex.map(function (e) { return amount(e.target || 0, e); })) + " before " + deadline;
+      // A race has no deadline (bouts-spec decision 19).
+      if (ex.length === 1) return "first to " + amount(targets[0], ex[0]);
+      if (oneNumber) return "first to " + targets[0] + " of each — " + spokenList(ex.map(function (e) { return noun(e, 2); }));
+      return "first to " + spokenList(ex.map(function (e) { return amount(e.target || 0, e); }));
     }
     var tail = "until " + deadline + ", most days wins";
     if (ex.length === 1) return amount(targets[0], ex[0]) + " a day " + tail;
@@ -155,7 +156,9 @@
   function render(p) {
     var node = document.getElementById("card-template").content.cloneNode(true);
     node.querySelector(".bout-name").textContent = p.name;
-    node.querySelector(".dates").textContent = shortDate(p.starts_at) + " → " + shortDate(p.ends_at);
+    node.querySelector(".dates").textContent = p.ends_at
+      ? shortDate(p.starts_at) + " → " + shortDate(p.ends_at)
+      : "Starts " + shortDate(p.starts_at) + " · no deadline — a lane with nothing logged for 30 days expires";
     var line = challenge(p);
     node.querySelector(".terms").textContent = line.charAt(0).toUpperCase() + line.slice(1) + ".";
     if (p.stakes) {
