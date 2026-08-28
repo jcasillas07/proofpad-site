@@ -93,6 +93,7 @@
     var tokens = word.toLowerCase().split(/[ -]+/);
     if (tokens.length >= 2 && SET_PHRASE.indexOf(tokens[tokens.length - 2]) >= 0) return word;  // "skin the cat", "toes-to-bar"
     var lower = word.toLowerCase();
+    if (/ss$/.test(lower)) return word + "es";                // "press" → "presses"
     if (/s$/.test(lower)) return word;
     if (/(ch|sh|x|z)$/.test(lower)) return word + "es";
     if (/[^aeiou]y$/.test(lower)) return word.slice(0, -1) + "ies";
