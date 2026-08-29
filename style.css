@@ -1,7 +1,7 @@
 /* Proofpad — the site wears the app's tokens (docs/proofpad-style.md).
    Two page shapes share this file:
      .home     the landing page — ONE fixed viewport, centered, never scrolls
-     (default) the document pages (/privacy) — long, and they MUST scroll
+     (default) the document pages (/privacy, /support) — long, and they MUST scroll
    Never move the .home rules onto bare `body`, or the privacy policy loses
    everything below the fold. */
 :root{--steel:#28292B;--plate:#333437;--knurl:#3F4043;--seam:#4B4C50;--chalk:#F2F0EA;--ash:#C7C3B9;--smoke:#97938B;--birch:#C89B6A;
@@ -11,7 +11,7 @@
 html{background:var(--steel);color:var(--chalk);font:17px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
 body{min-height:100vh;display:flex;flex-direction:column;background:var(--steel)}
 
-/* ── document pages (/privacy) ─────────────────────────────────────── */
+/* ── document pages (/privacy, /support) ─────────────────────────────────────── */
 main{width:100%;max-width:640px;margin:0 auto;padding:72px 24px 48px;flex:1}
 .wordmark{font-size:44px;font-weight:600;letter-spacing:0;line-height:1;color:var(--chalk);text-decoration:none;display:inline-block}
 .lede{font-size:28px;font-weight:600;line-height:1.2;margin-top:40px}
@@ -26,7 +26,7 @@ a{color:var(--chalk)}
 .mono{font-family:var(--mono);font-size:13px;color:var(--ash)}
 /* ONE footer for every page (Jake, 2026-08-23): no rule above it, links
    centred, 13px. The landing page adds nothing to it but flex:none, which
-   its column layout needs; the look is identical on /privacy. */
+   its column layout needs; the look is identical on /privacy and /support. */
 footer{
   width:100%;max-width:none;margin:0 auto;border-top:0;
   /* min() so the clearance yields on a very short viewport. Mobile Safari's
