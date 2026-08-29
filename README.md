@@ -1,6 +1,6 @@
 # proofpad.co
 
-The Proofpad website: a landing page and the privacy policy. Static HTML on GitHub Pages;
+The Proofpad website: a landing page, the privacy policy and the support page. Static HTML on GitHub Pages;
 the app's design tokens, no build step. Push to `main` and it is live in ~30 seconds.
 
 ## Two page shapes, one stylesheet
@@ -14,9 +14,10 @@ the app's design tokens, no build step. Push to `main` and it is live in ~30 sec
   which is what makes "never scrolls" structural rather than tuned. Don't delete the
   `overflow:hidden`, and don't move any `.home` rule onto bare `body` — the privacy policy
   is long and depends on scrolling.
-- **`privacy.html`** is a normal document page and scrolls. `/privacy` and
+- **`privacy.html`** and **`support.html`** are normal document pages and scroll. `/privacy` and
   `/privacy#delete` must both stay reachable: Meta requires those URLs for the app to
-  remain Live.
+  remain Live. `/support` is the App Store listing's support URL (2026-08-29) — keep it
+  live too.
 
 `svh`, not `vh`: `100vh` resolves against the toolbar-retracted viewport, so on a phone the
 page loads taller than the screen and clips. `100svh` is the smallest (toolbar-showing)

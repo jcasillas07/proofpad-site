@@ -1,4 +1,4 @@
-/* ProofPad — the site wears the app's tokens (docs/proofpad-style.md).
+/* Proofpad — the site wears the app's tokens (docs/proofpad-style.md).
    Two page shapes share this file:
      .home     the landing page — ONE fixed viewport, centered, never scrolls
      (default) the document pages (/privacy) — long, and they MUST scroll
@@ -13,7 +13,7 @@ body{min-height:100vh;display:flex;flex-direction:column;background:var(--steel)
 
 /* ── document pages (/privacy) ─────────────────────────────────────── */
 main{width:100%;max-width:640px;margin:0 auto;padding:72px 24px 48px;flex:1}
-.wordmark{font-size:44px;font-weight:600;letter-spacing:.02em;line-height:1;color:var(--chalk);text-decoration:none;display:inline-block}
+.wordmark{font-size:44px;font-weight:600;letter-spacing:0;line-height:1;color:var(--chalk);text-decoration:none;display:inline-block}
 .lede{font-size:28px;font-weight:600;line-height:1.2;margin-top:40px}
 .sub{color:var(--ash);margin-top:14px;font-size:17px}
 .quiet{color:var(--smoke);margin-top:28px;font-size:15px}
@@ -61,7 +61,7 @@ body.home main{
   text-align:center;gap:clamp(16px,2.8svh,30px);
 }
 body.home .stack{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.4svh,14px)}
-body.home .wordmark{font-size:clamp(26px,4.4svh,40px);letter-spacing:.045em}
+body.home .wordmark{font-size:clamp(26px,4.4svh,40px);letter-spacing:0}
 body.home .lede{font-size:clamp(21px,3.4svh,31px);font-weight:600;letter-spacing:-.015em;line-height:1.14;margin:0;text-wrap:balance}
 body.home .sub{font-size:clamp(14px,1.85svh,17px);color:var(--ash);line-height:1.5;margin:0;max-width:34ch}
 body.home .cta{display:flex;flex-direction:column;align-items:center;gap:clamp(9px,1.5svh,14px)}

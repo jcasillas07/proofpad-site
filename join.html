@@ -20,7 +20,7 @@
 <body>
 
 <main>
-  <a class="wordmark" href="/">PROOFPAD</a>
+  <a class="wordmark" href="/">Proofpad</a>
 
   <!-- The invite, as anyone holding the link sees it: the Bout's terms and
        the members' display names — never a username or an account
@@ -54,6 +54,7 @@
 
 <footer>
   <a href="/privacy">Privacy</a>
+  <a href="/support">Support</a>
   <a href="/privacy#delete">Delete your data</a>
 </footer>
 
@@ -157,7 +158,7 @@
     node.querySelector(".bout-name").textContent = p.name;
     node.querySelector(".dates").textContent = p.ends_at
       ? shortDate(p.starts_at) + " → " + shortDate(p.ends_at)
-      : "Starts " + shortDate(p.starts_at) + " · no deadline — a lane with nothing logged for 30 days expires";
+      : "Starts " + shortDate(p.starts_at) + " · no deadline — an exercise nobody has logged for 30 days expires";
     var line = challenge(p);
     node.querySelector(".terms").textContent = line.charAt(0).toUpperCase() + line.slice(1) + ".";
     if (p.stakes) {
