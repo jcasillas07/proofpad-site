@@ -112,7 +112,6 @@
   }
   function amount(value, e) {
     if (e.measurement === "hold") return spokenSeconds(value) + " of " + noun(e, 2);
-    if (e.measurement === "distance") return value + " m of " + noun(e, 2);
     return value + " " + noun(e, value);
   }
   function joined(items) {
@@ -138,7 +137,6 @@
     if (p.format === "total") {
       return "most " + spokenList(ex.map(function (e) {
         if (e.measurement === "hold") return noun(e, 2) + " time";
-        if (e.measurement === "distance") return noun(e, 2) + " distance";
         return noun(e, 2);
       })) + " by " + deadline;
     }
