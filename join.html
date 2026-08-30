@@ -158,7 +158,7 @@
     node.querySelector(".bout-name").textContent = p.name;
     node.querySelector(".dates").textContent = p.ends_at
       ? shortDate(p.starts_at) + " → " + shortDate(p.ends_at)
-      : "Starts " + shortDate(p.starts_at) + " · no deadline — an exercise nobody has logged for 30 days expires";
+      : "Starts " + shortDate(p.starts_at) + " · no deadline — a race nobody has logged for 30 days expires";
     var line = challenge(p);
     node.querySelector(".terms").textContent = line.charAt(0).toUpperCase() + line.slice(1) + ".";
     if (p.stakes) {
