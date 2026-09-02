@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["NWB567XATL.com.jcasillas.proofpad"],
+        "appIDs": ["NWB567XATL.com.proofpad.app"],
         "components": [
           { "/": "/join", "?": { "b": "?*" }, "comment": "Bout invites — https://proofpad.co/join?b=<token>" }
         ]
