@@ -17,11 +17,11 @@
 <main>
   <a class="wordmark" href="/">Proofpad</a>
   <h1>Privacy</h1>
-  <p class="mono">Effective September 1, 2026</p>
+  <p class="mono">Effective September 2, 2026</p>
   <p>Proofpad is a calisthenics workout log for iPhone. This page says plainly what the app stores, what is public, and how to delete all of it. There are no advertising or analytics SDKs in the app, and nothing is sold or shared for marketing.</p>
 
   <h2>Your account</h2>
-  <p>You sign in with Apple or with Google. With Apple we receive only Apple's anonymous identifier for your account — we do not ask Apple for your name or email address. With Google we receive your Google account's identifier and its email address, which we keep only to identify your account; we never send mail to it and never show it to anyone. You then choose a username, which is public: it names every board entry and profile of yours.</p>
+  <p>You sign in with Apple or with Google. With Apple we receive only Apple's anonymous identifier for your account — we do not ask Apple for your name or email address. With Google we receive your Google account's identifier and its email address, which we keep only to identify your account; we never send mail to it and never show it to anyone. You then choose a username, which is public: it names every board entry and profile of yours. Everything else you set in the app &mdash; your starred exercises, the logging-reminder interval, your home region, the Proof tab's period, the name you use in Bouts &mdash; is stored with your account, so it follows you to a new phone and leaves with a sign-out.</p>
 
   <h2>Your training log</h2>
   <p>Every workout you record — exercises, sets, reps, holds, the date — is saved on your phone and synced to our servers so it survives a new phone and backs up your log. Custom exercises you add are synced the same way. Signing out clears the log from that phone; signing back in restores it from our servers.</p>
@@ -39,14 +39,14 @@
   <h2>Bouts</h2>
   <p>A Bout is a private competition between friends. When you create or join one, Proofpad stores the Bout's name, format, dates and stakes text, the display name you chose for that Bout, and a snapshot of each of your workouts that counted toward it. The other members of that Bout can see all of this; nobody else can. Members see each other by display name only — your username and your account are never shown to them.</p>
   <p>The invite link shows the Bout's terms and its members' display names to anyone who has it. Share it with the people you mean to.</p>
-  <p>You can take a workout off a Bout on the Bout's page, and leave a Bout at any time &mdash; leaving one that has started removes your counted workouts from it, and the other members see that you left and on which day. Deleting your account removes everything above. A Bout's creator can cancel it before it starts.</p>
+  <p>You can take a workout off a Bout on the Bout's page, and leave a Bout at any time &mdash; leaving one that has started removes your counted workouts from it, and the other members see that you left and on which day. Deleting your account removes your membership, display name and workout snapshots from every Bout, and deletes a Bout you created that nobody else joined; a Bout with other members keeps running without you. A Bout's creator can cancel it before it starts.</p>
 
   <h2>Notifications</h2>
   <p>If you allow notifications, we keep your device's push token so the app can tell you when you are overtaken on a board, when a board opens where you train, when a Bout you're in is about to start, about to end, or over, and remind you to log during a workout. Alongside the token we store your device's time zone and up to two training-hour ranges, so a push lands when you actually train and not at 3am. The ranges are worked out on your phone from the times of your recent sets; the set times themselves never leave the phone for this &mdash; only the two ranges do.</p>
   <p>The board-opens alert is board news: it is sent under Settings &rarr; Tell me when my rank falls, and if your posts move onto a newly opened local board you are told without having asked. If you asked from outside the United States, Tell me when a board opens here also has to be on. Each switch lives in Settings &rarr; Notifications. The token, time zone and ranges are deleted when every switch is off, when you sign out, and when you delete your account; revoking the permission in iOS ends all of them.</p>
 
   <h2>Operations</h2>
-  <p>A few account events send a short internal alert to the people who run Proofpad: signing up, changing your username (the alert says the old and new name), creating a Bout, and deleting your account (the alert names the account, as our record that the deletion happened). These alerts are private, name only your username, and exist only so we can see our own service working. When you change your username, we also keep a record of the change &mdash; the old name, the new name, and when &mdash; which is erased with your account.</p>
+  <p>A few account events send a short internal alert to the people who run Proofpad: signing up, changing your username (the alert says the old and new name), creating a Bout, and deleting your account (the alert names the account, as our record that the deletion happened). These alerts are private, carry only your username (and, on deletion, the note you chose to leave), and exist only so we can see our own service working. When you change your username, we also keep a record of the change &mdash; the old name, the new name, and when &mdash; which is erased with your account.</p>
 
   <h2>Where it lives</h2>
   <p>Account and training data is stored on infrastructure hosted by Supabase. Apple and Google each handle only their own sign-in; Apple delivers notifications; Meta delivers the one Instagram message described above. We do not move your data anywhere else.</p>
