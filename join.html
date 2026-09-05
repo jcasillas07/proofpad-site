@@ -82,7 +82,7 @@
 
   // The challenge in the invite's own words — a MIRROR of BoutCopy.challenge
   // in the app (Sync/Bouts.swift), which is the source; change both.
-  var NOUNS = { "pullup": "pull-ups", "bar-muscle-up": "muscle-ups" };
+  var NOUNS = { "pull-up": "pull-ups", "muscle-up": "muscle-ups" };
   function spokenName(name) {
     var t = name.trim();
     if (t.length > 1 && /[A-Z]/.test(t[0]) && /[a-z]/.test(t[1])) return t[0].toLowerCase() + t.slice(1);
