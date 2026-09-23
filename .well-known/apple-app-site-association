@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["89H5Z4CZXD.com.proofpad.app"],
+        "appIDs": ["89H5Z4CZXD.com.proofpad.app", "89H5Z4CZXD.com.proofpad.app.dev"],
         "components": [
           { "/": "/join", "?": { "b": "?*" }, "comment": "Bout invites — https://proofpad.co/join?b=<token>" }
         ]
