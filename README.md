@@ -61,7 +61,8 @@ visual check in real Safari (the iOS Simulator works: `xcrun simctl openurl <id>
   copies the invite URL to the clipboard (the app reads it once on a fresh install) and shows
   the coming-soon line — on launch day that button opens the App Store after copying.
 - **`.well-known/apple-app-site-association`** makes the same URL a universal link (the app
-  opens straight from Messages). Team-scoped: re-issue at the org switch. GitHub Pages serves
+  opens straight from Messages). Team-scoped, and it lists BOTH apps since 2026-09-23 — the
+  store app and Proofpad Dev (`com.proofpad.app.dev`); with both installed, iOS picks one. GitHub Pages serves
   it as `application/octet-stream`; verify after a push with
   `curl -sI https://app-site-association.cdn-apple.com/a/v1/proofpad.co` — a 200 means Apple's
   CDN accepted it. If it ever refuses the content-type, a header-setting host in front is the fix.
