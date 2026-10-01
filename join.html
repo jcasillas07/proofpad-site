@@ -168,15 +168,20 @@
       node.querySelector(".stakes").remove();
     }
     var seats = p.seats_open === 1 ? "1 seat open" : p.seats_open + " seats open";
-    node.querySelector(".members").textContent = p.members.join(", ") + " · " + seats;
+    // Seats are counted only while joining is open (full or started: names alone).
+    node.querySelector(".members").textContent = p.is_open
+      ? p.members.join(", ") + " · " + seats
+      : p.members.join(", ");
 
     var closes = node.querySelector(".closes");
     var actions = node.querySelector(".actions");
-    if (!p.is_open) {
-      closes.textContent = "Joining closed — this one started " + shortDate(p.starts_at) + ".";
-      actions.remove();
-    } else if (p.seats_open === 0) {
+    // Full before closed: the server's is_open is false for both, and a full
+    // bout whose start is still ahead has not started (the app's isFull).
+    if (p.seats_open === 0 && new Date(p.starts_at) > new Date()) {
       closes.textContent = "This bout is full.";
+      actions.remove();
+    } else if (!p.is_open) {
+      closes.textContent = "Joining closed — this one started " + shortDate(p.starts_at) + ".";
       actions.remove();
     } else {
       closes.textContent = "Joining closes when it starts.";
