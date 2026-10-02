@@ -184,8 +184,10 @@
     // Full before closed: the server's is_open is false for both, and a full
     // bout whose start is still ahead has not started (the app's isFull).
     if (p.seats_open === 0 && new Date(p.starts_at) > new Date()) {
-      closes.textContent = "This bout is full.";
-      actions.remove();
+      // The line (bouts-spec 25): the seats are taken; in the app you put
+      // your name down and the host can make room. The page can only point.
+      var host = p.host || "The host";
+      closes.textContent = "The seats are taken. " + host + " can make room for up to 100. Open in Proofpad to put your name down — you're in when they do.";
     } else if (!p.is_open) {
       closes.textContent = "Joining closed — this one started " + shortDate(p.starts_at) + ".";
       actions.remove();
