@@ -58,7 +58,7 @@ visual check in real Safari (the iOS Simulator works: `xcrun simctl openurl <id>
 - **`join.html`** serves `https://proofpad.co/join?b=<token>` — a Bout invite as anyone holding
   the link sees it. The site's first JavaScript: it calls the app's one anonymous RPC
   (`bout_invite_preview`) with the publishable key and renders the terms and the members'
-  display names. [Open in Proofpad] is the `proofpad://join?b=` scheme link; [Get Proofpad]
+  usernames (display names until 2026-10-18). [Open in Proofpad] is the `proofpad://join?b=` scheme link; [Get Proofpad]
   copies the invite URL to the clipboard (the app reads it once on a fresh install) and shows
   the coming-soon line — on launch day that button opens the App Store after copying.
 - **`.well-known/apple-app-site-association`** makes the same URL a universal link (the app

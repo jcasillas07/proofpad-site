@@ -23,8 +23,9 @@
   <a class="wordmark" href="/">Proofpad</a>
 
   <!-- The invite, as anyone holding the link sees it: the Bout's terms and
-       the members' display names — never a username or an account
-       (docs/bouts-spec.md decision 11). Rendered from bout_invite_preview,
+       every member's Proofpad username — read live, so a rename follows —
+       and never an account id (docs/bouts-spec.md decision 11, amended
+       2026-10-18: Bouts show usernames). Rendered from bout_invite_preview,
        the one anonymous door the server has. -->
   <section id="invite" aria-live="polite">
     <p class="quiet" id="status">Loading the challenge…</p>
@@ -185,10 +186,11 @@
     // Full before closed: the server's is_open is false for both, and a full
     // bout whose start is still ahead has not started (the app's isFull).
     if (p.seats_open === 0 && new Date(p.starts_at) > new Date()) {
-      // The line (bouts-spec 25): the seats are taken; in the app you put
-      // your name down and the host can make room. The page can only point.
+      // The line (bouts-spec 25): the seats are taken; in the app you ask
+      // and the host can make room. The page can only point. `host` is the
+      // host's username.
       var host = p.host || "The host";
-      closes.textContent = "The seats are taken. " + host + " can make room for up to 100. Open in Proofpad to put your name down — you're in when they do.";
+      closes.textContent = "The seats are taken. " + host + " can make room for up to 100. Open in Proofpad to ask — you're in when they do.";
     } else if (!p.is_open) {
       closes.textContent = "Joining closed — this one started " + shortDate(p.starts_at) + ".";
       actions.remove();
